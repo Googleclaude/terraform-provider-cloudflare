@@ -5,6 +5,13 @@ import { withAudit } from "../audit";
 
 const GH_API = "https://api.github.com";
 
+function toBase64Utf8(s: string): string {
+  const bytes = new TextEncoder().encode(s);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]!);
+  return btoa(binary);
+}
+
 export function registerGithubTools(server: McpServer, props: Props, env: Env) {
   server.tool(
     "github_open_pr",
@@ -99,7 +106,7 @@ export function registerGithubTools(server: McpServer, props: Props, env: Env) {
               headers: { ...headers, "Content-Type": "application/json" },
               body: JSON.stringify({
                 message: `agent: update ${f.path}`,
-                content: btoa(unescape(encodeURIComponent(f.content))),
+                content: toBase64Utf8(f.content),
                 branch: args.branch,
                 ...(existing.sha ? { sha: existing.sha } : {}),
               }),

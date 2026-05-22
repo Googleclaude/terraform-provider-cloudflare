@@ -33,7 +33,7 @@ export interface DriftResult {
   pr_url?: string;
 }
 
-function diffRecords(declared: DeclaredRecord[], live: LiveRecord[]) {
+export function diffRecords(declared: DeclaredRecord[], live: LiveRecord[]) {
   const key = (r: { type: string; name: string; content: string }) =>
     `${r.type}|${r.name}|${r.content}`;
   const declaredKeys = new Set(declared.map(key));
