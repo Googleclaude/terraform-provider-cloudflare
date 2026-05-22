@@ -1,0 +1,26 @@
+name: Deploy Autonomous Agent
+on:
+  push:
+    branches: [main]
+    paths: ['apps/autonomous-agent/**', '.github/workflows/deploy-agent.yml']
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, id-token: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter autonomous-agent typecheck
+      - run: pnpm --filter autonomous-agent test
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: apps/autonomous-agent
+          command: deploy

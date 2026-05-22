@@ -1,0 +1,37 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mcp-server",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Substitua pelos seus IDs depois de criar os recursos:
+  //   wrangler kv namespace create OAUTH_KV
+  //   wrangler d1 create audit-log
+  // Em produção, descomente a rota:
+  // "routes": [{ "pattern": "mcp.seu-dominio.com/*", "zone_name": "seu-dominio.com" }],
+
+  "durable_objects": {
+    "bindings": [{ "name": "MCP_AGENT", "class_name": "OpsAgent" }]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["OpsAgent"] }
+  ],
+
+  "kv_namespaces": [
+    { "binding": "OAUTH_KV", "id": "TODO_REPLACE_WITH_KV_ID" }
+  ],
+  "d1_databases": [
+    {
+      "binding": "AUDIT",
+      "database_name": "audit-log",
+      "database_id": "TODO_REPLACE_WITH_D1_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  "vars": {
+    "ALLOWED_SCOPES": "dns:read,dns:write,waf:read,waf:write,access:read,access:write,observability,github:write,emergency:write"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "autonomous-agent",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  "durable_objects": {
+    "bindings": [{ "name": "AGENT", "class_name": "AutonomousAgent" }]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["AutonomousAgent"] }
+  ],
+
+  "triggers": {
+    "crons": [
+      "*/5 * * * *",
+      "0 * * * *",
+      "0 3 * * *"
+    ]
+  },
+
+  "kv_namespaces": [
+    { "binding": "OAUTH_KV", "id": "TODO_REPLACE_WITH_KV_ID" }
+  ],
+
+  "vars": {
+    "MCP_OPS_URL": "https://mcp.seu-dominio.com/mcp",
+    "MCP_CF_URL": "https://api.mcp.cloudflare.com/mcp",
+    "HOSTS_TO_CHECK": "https://example.com,https://api.example.com",
+    "GITHUB_OWNER": "TODO_REPLACE_WITH_OWNER",
+    "GITHUB_REPO": "TODO_REPLACE_WITH_REPO",
+    "DNS_ZONE_ID": "TODO_REPLACE_WITH_ZONE_ID"
+  }
+}
