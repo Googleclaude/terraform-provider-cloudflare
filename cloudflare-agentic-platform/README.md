@@ -2,6 +2,7 @@
 
 Plataforma agêntica sobre o edge da Cloudflare. Veja:
 
+- [`SETUP.md`](./SETUP.md) — guia operacional do zero ao produção
 - [`docs/projeto.md`](./docs/projeto.md) — plano completo
 - [`AGENTS.md`](./AGENTS.md) — contexto para Claude Code e outros agentes de coding
 - [`PROMPTS.md`](./PROMPTS.md) — sequência de prompts para execução assistida
