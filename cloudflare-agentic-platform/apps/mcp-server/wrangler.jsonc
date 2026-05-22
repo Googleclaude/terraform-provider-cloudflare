@@ -6,11 +6,13 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
 
-  // Substitua pelos seus IDs depois de criar os recursos:
+  // Por enquanto serve no workers.dev: <mcp-server>.<seu-subdominio>.workers.dev
+  // Quando tiver domínio próprio, adicione "routes" abaixo:
+  //   "routes": [{ "pattern": "mcp.<seu-dominio>/*", "zone_name": "<seu-dominio>" }],
+  //
+  // Substitua os TODO_REPLACE_WITH_* pelos IDs reais (ou use ./scripts/provision-cloudflare.sh --apply):
   //   wrangler kv namespace create OAUTH_KV
   //   wrangler d1 create audit-log
-  // Em produção, descomente a rota:
-  // "routes": [{ "pattern": "mcp.seu-dominio.com/*", "zone_name": "seu-dominio.com" }],
 
   "durable_objects": {
     "bindings": [{ "name": "MCP_AGENT", "class_name": "OpsAgent" }]

@@ -25,12 +25,15 @@
     { "binding": "OAUTH_KV", "id": "TODO_REPLACE_WITH_KV_ID" }
   ],
 
+  // MCP_OPS_URL: aponte para o worker do mcp-server depois do primeiro deploy.
+  // O workers.dev URL padrão é https://mcp-server.<seu-subdominio>.workers.dev/mcp
+  // (substitua <seu-subdominio> pelo subdomínio da sua conta).
   "vars": {
-    "MCP_OPS_URL": "https://mcp.seu-dominio.com/mcp",
+    "MCP_OPS_URL": "https://mcp-server.workers.dev/mcp",
     "MCP_CF_URL": "https://api.mcp.cloudflare.com/mcp",
     "HOSTS_TO_CHECK": "https://example.com,https://api.example.com",
-    "GITHUB_OWNER": "TODO_REPLACE_WITH_OWNER",
-    "GITHUB_REPO": "TODO_REPLACE_WITH_REPO",
+    "GITHUB_OWNER": "googleclaude",
+    "GITHUB_REPO": "terraform-provider-cloudflare",
     "DNS_ZONE_ID": "TODO_REPLACE_WITH_ZONE_ID"
   }
 }
