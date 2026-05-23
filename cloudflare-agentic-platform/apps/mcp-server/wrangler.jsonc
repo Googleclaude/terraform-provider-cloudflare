@@ -34,6 +34,14 @@
   ],
 
   "vars": {
-    "ALLOWED_SCOPES": "dns:read,dns:write,waf:read,waf:write,access:read,access:write,observability,github:write,emergency:write"
+    "ALLOWED_SCOPES": "dns:read,dns:write,waf:read,waf:write,access:read,access:write,observability,github:write,emergency:write",
+
+    // AUTH_MODE controla autenticação no /authorize. Default = unset = 503 (fail-closed).
+    // Produção: setar para "cloudflare-access" + preencher CF_ACCESS_TEAM_DOMAIN e CF_ACCESS_AUD.
+    // Dev local: "dev-insecure" + DEV_MODE_CONFIRM (ver worker-configuration.d.ts).
+    "AUTH_MODE": "",
+    "CF_ACCESS_TEAM_DOMAIN": "",
+    "CF_ACCESS_AUD": "",
+    "DEV_MODE_CONFIRM": ""
   }
 }
