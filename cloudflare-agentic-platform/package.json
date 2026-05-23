@@ -1,0 +1,22 @@
+{
+  "name": "cloudflare-agentic-platform",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "eval": "pnpm -r eval",
+    "dev:mcp": "pnpm --filter mcp-server dev",
+    "dev:agent": "pnpm --filter autonomous-agent dev",
+    "deploy:mcp": "pnpm --filter mcp-server deploy",
+    "deploy:agent": "pnpm --filter autonomous-agent deploy"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

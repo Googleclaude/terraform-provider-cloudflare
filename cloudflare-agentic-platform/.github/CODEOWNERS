@@ -1,0 +1,5 @@
+# Substitua pelos handles reais antes do go-live
+* @TODO-OWNER
+/apps/mcp-server/ @TODO-OWNER
+/apps/autonomous-agent/ @TODO-OWNER
+/infra/ @TODO-OWNER @TODO-SEC-LEAD

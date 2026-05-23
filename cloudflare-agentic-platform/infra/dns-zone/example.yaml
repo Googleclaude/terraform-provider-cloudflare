@@ -1,0 +1,8 @@
+# Estado declarado da zona. O runbook dns-drift compara isto contra a realidade.
+zone: exemplo.com.br
+records:
+  - { type: A,     name: '@',   content: '203.0.113.10', ttl: 300, proxied: true }
+  - { type: A,     name: www,   content: '203.0.113.10', ttl: 300, proxied: true }
+  - { type: CNAME, name: mcp,   content: 'mcp-server.workers.dev', ttl: 300, proxied: true }
+  - { type: CNAME, name: agent, content: 'autonomous-agent.workers.dev', ttl: 300, proxied: true }
+  - { type: MX,    name: '@',   content: '10 mail.exemplo.com.br', ttl: 3600, proxied: false }
