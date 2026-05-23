@@ -1,0 +1,41 @@
+{
+  "_comment": "Cloudflare Managed Ruleset + OWASP — entrypoint do phase http_request_firewall_managed. Aplica via PUT /zones/{zone_id}/rulesets/phases/http_request_firewall_managed/entrypoint",
+  "_docs": "https://developers.cloudflare.com/waf/managed-rules/reference/",
+  "rules": [
+    {
+      "_comment": "Cloudflare Managed Ruleset — bloqueio padrão de ataques conhecidos (RCE, SQLi, etc)",
+      "action": "execute",
+      "action_parameters": {
+        "id": "efb7b8c949ac4650a09736fc376e9aee",
+        "version": "latest"
+      },
+      "expression": "true",
+      "description": "Cloudflare Managed Ruleset",
+      "enabled": true
+    },
+    {
+      "_comment": "OWASP Core Ruleset — sensibilidade média. Aumentar para 'high' em produção após sintonizar exceções.",
+      "action": "execute",
+      "action_parameters": {
+        "id": "4814384a9e5d4991b9815dcfc25d2f1f",
+        "version": "latest",
+        "overrides": {
+          "categories": [
+            {
+              "category": "paranoia-level-1",
+              "enabled": true
+            },
+            {
+              "category": "paranoia-level-2",
+              "enabled": false,
+              "_comment": "Habilitar após sintonizar para evitar falsos positivos"
+            }
+          ]
+        }
+      },
+      "expression": "true",
+      "description": "OWASP Core Ruleset",
+      "enabled": true
+    }
+  ]
+}

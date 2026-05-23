@@ -1,0 +1,41 @@
+# Template para uma zona. Copie para <seu-dominio>.yaml e edite.
+# O runbook dns-drift compara este arquivo contra a zona real e abre PR se divergir.
+
+zone: <seu-dominio>.com         # FQDN da zona
+zone_id: <ZONE_ID>              # Cloudflare zone ID — encontre em dash.cloudflare.com (sidebar direito)
+
+# Defaults aplicados a todos os records se não sobrescritos
+defaults:
+  ttl: 300                       # 5min; aumentar para 3600 em records estáveis
+  proxied: true                  # true ativa o proxy (laranja); false = DNS only (cinza)
+
+records:
+  # Apex — A record do site principal
+  - { type: A,     name: '@',      content: '203.0.113.10' }
+
+  # WWW
+  - { type: A,     name: www,      content: '203.0.113.10' }
+
+  # MCP Server (workers.dev até ter rota custom)
+  - { type: CNAME, name: mcp,      content: 'mcp-server.<seu-subdominio>.workers.dev' }
+
+  # Autonomous Agent
+  - { type: CNAME, name: agent,    content: 'autonomous-agent.<seu-subdominio>.workers.dev' }
+
+  # AI Gateway (subdomínio dedicado, opcional)
+  - { type: CNAME, name: gateway,  content: 'gateway.ai.cloudflare.com' }
+
+  # MX records — não proxied (proxy só funciona para HTTP)
+  - { type: MX,    name: '@',      content: '10 mail.<seu-dominio>.com', proxied: false, ttl: 3600 }
+
+  # TXT — SPF
+  - { type: TXT,   name: '@',      content: 'v=spf1 include:_spf.google.com ~all', proxied: false, ttl: 3600 }
+
+  # TXT — DMARC
+  - { type: TXT,   name: _dmarc,   content: 'v=DMARC1; p=reject; rua=mailto:dmarc@<seu-dominio>.com', proxied: false, ttl: 3600 }
+
+# Records que o agente DEVE ignorar (gerenciados pela Cloudflare ou third-party)
+ignore_patterns:
+  - type: NS
+  - type: SOA
+  - { name: '*._domainkey' }      # DKIM keys gerenciadas pelo provedor de email

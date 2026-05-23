@@ -1,0 +1,48 @@
+{
+  "_comment": "Rate limiting global por IP em mcp.* e agent.*. Aplica via PUT /zones/{zone_id}/rulesets/phases/http_ratelimit/entrypoint",
+  "_docs": "https://developers.cloudflare.com/waf/rate-limiting-rules/",
+  "rules": [
+    {
+      "_comment": "MCP server: 100 req/min/IP. Bloqueia por 60s.",
+      "action": "block",
+      "ratelimit": {
+        "characteristics": ["ip.src"],
+        "period": 60,
+        "requests_per_period": 100,
+        "mitigation_timeout": 60,
+        "counting_expression": "(http.host contains \"mcp.\")"
+      },
+      "expression": "(http.host contains \"mcp.\")",
+      "description": "Rate limit MCP server: 100 req/min/IP",
+      "enabled": true
+    },
+    {
+      "_comment": "Agent dashboard: 30 req/min/IP (mais conservador, menor superfície)",
+      "action": "block",
+      "ratelimit": {
+        "characteristics": ["ip.src"],
+        "period": 60,
+        "requests_per_period": 30,
+        "mitigation_timeout": 120,
+        "counting_expression": "(http.host contains \"agent.\")"
+      },
+      "expression": "(http.host contains \"agent.\")",
+      "description": "Rate limit agent: 30 req/min/IP",
+      "enabled": true
+    },
+    {
+      "_comment": "OAuth /authorize: 10 req/min/IP — protege contra brute-force de sessão",
+      "action": "block",
+      "ratelimit": {
+        "characteristics": ["ip.src"],
+        "period": 60,
+        "requests_per_period": 10,
+        "mitigation_timeout": 300,
+        "counting_expression": "(http.host contains \"mcp.\" and http.request.uri.path eq \"/authorize\")"
+      },
+      "expression": "(http.host contains \"mcp.\" and http.request.uri.path eq \"/authorize\")",
+      "description": "Rate limit OAuth: 10 req/min/IP",
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "_comment": "Settings que NÃO são rulesets — security level, bot management, TLS. Aplicar via PATCH /zones/{zone_id}/settings/{name}",
+  "_docs": "https://developers.cloudflare.com/api/operations/zone-settings-edit-zone-settings-info",
+
+  "security_level": {
+    "value": "medium",
+    "_comment": "off|essentially_off|low|medium|high|under_attack. Eleva para 'high' em incidente via tool waf_set_security_level"
+  },
+
+  "min_tls_version": {
+    "value": "1.3"
+  },
+
+  "tls_1_3": {
+    "value": "on"
+  },
+
+  "ssl": {
+    "value": "strict",
+    "_comment": "Full (Strict) — exige cert válido na origem"
+  },
+
+  "always_use_https": {
+    "value": "on"
+  },
+
+  "security_header": {
+    "value": {
+      "strict_transport_security": {
+        "enabled": true,
+        "max_age": 31536000,
+        "include_subdomains": true,
+        "preload": true,
+        "nosniff": true
+      }
+    }
+  },
+
+  "challenge_ttl": {
+    "value": 1800
+  },
+
+  "browser_check": {
+    "value": "on"
+  },
+
+  "opportunistic_encryption": {
+    "value": "on"
+  }
+}
