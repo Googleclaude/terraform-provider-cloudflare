@@ -1081,7 +1081,7 @@ func WriteOutConfig(t *testing.T, v4Config string, tmpDir string) {
 	testConfigPath := filepath.Join(tmpDir, "test_migration.tf")
 	debugLogf(t, "Writing v4 config to: %s", testConfigPath)
 
-	err := os.WriteFile(testConfigPath, []byte(v4Config), 0644)
+	err := os.WriteFile(testConfigPath, []byte(v4Config), 0600)
 	if err != nil {
 		t.Fatalf("Failed to write test config file: %v", err)
 	}
@@ -1107,7 +1107,7 @@ provider "cloudflare" {}
 	providerConfigPath := filepath.Join(tmpDir, "provider.tf")
 	debugLogf(t, "Writing provider config to: %s", providerConfigPath)
 
-	err = os.WriteFile(providerConfigPath, []byte(providerConfig), 0644)
+	err = os.WriteFile(providerConfigPath, []byte(providerConfig), 0600)
 	if err != nil {
 		t.Fatalf("Failed to write provider config file: %v", err)
 	}

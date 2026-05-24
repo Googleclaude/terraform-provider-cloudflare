@@ -52,13 +52,13 @@ func LogRequest(ctx context.Context, req *http.Request) error {
 	}
 
 	if req.Body != nil {
-		// Read the body without mutating the original response
+		// Read the body without mutating the original request
 		bodyBytes, err := io.ReadAll(req.Body)
 		if err != nil {
 			return err
 		}
 
-		// Restore the original body to the response so it can be read again
+		// Restore the original body to the request so it can be read again
 		req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		// Log the body
