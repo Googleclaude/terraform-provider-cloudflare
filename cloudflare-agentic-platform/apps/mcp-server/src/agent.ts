@@ -15,25 +15,27 @@ export class OpsAgent extends McpAgent<Env, unknown, Props> {
   });
 
   async init() {
-    const scopes = new Set<Scope>(this.props.scopes);
+    const props = this.props;
+    if (!props) throw new Error("OpsAgent.init: props missing (OAuth must populate props before tool use)");
+    const scopes = new Set<Scope>(props.scopes);
 
     if (scopes.has("dns:read") || scopes.has("dns:write")) {
-      registerDnsTools(this.server, this.props, this.env);
+      registerDnsTools(this.server, props, this.env);
     }
     if (scopes.has("waf:read") || scopes.has("waf:write")) {
-      registerWafTools(this.server, this.props, this.env);
+      registerWafTools(this.server, props, this.env);
     }
     if (scopes.has("access:read") || scopes.has("access:write")) {
-      registerAccessTools(this.server, this.props, this.env);
+      registerAccessTools(this.server, props, this.env);
     }
     if (scopes.has("observability")) {
-      registerObservabilityTools(this.server, this.props, this.env);
+      registerObservabilityTools(this.server, props, this.env);
     }
     if (scopes.has("github:write")) {
-      registerGithubTools(this.server, this.props, this.env);
+      registerGithubTools(this.server, props, this.env);
     }
     if (scopes.has("emergency:write")) {
-      registerEmergencyTools(this.server, this.props, this.env);
+      registerEmergencyTools(this.server, props, this.env);
     }
   }
 }
