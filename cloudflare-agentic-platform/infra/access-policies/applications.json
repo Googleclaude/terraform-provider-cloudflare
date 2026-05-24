@@ -1,0 +1,70 @@
+{
+  "_comment": "Apps Access que envolvem os hostnames do MCP e agent. Aplicar via POST /accounts/{account_id}/access/apps",
+  "_docs": "https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/self-hosted-apps/",
+
+  "applications": [
+    {
+      "name": "MCP Server",
+      "domain": "mcp.<seu-dominio>.com",
+      "type": "self_hosted",
+      "session_duration": "1h",
+      "auto_redirect_to_identity": true,
+      "_comment": "Sessão curta porque cada sessão gera token CF downscoped — TTL longo aumenta janela de comprometimento",
+      "policies": [
+        {
+          "name": "Allow agents-admin",
+          "decision": "allow",
+          "include": [
+            { "group": ["agents-admin"] }
+          ],
+          "require": [
+            { "auth_method": ["mfa"] }
+          ]
+        },
+        {
+          "name": "Allow agents-operator com MFA",
+          "decision": "allow",
+          "include": [
+            { "group": ["agents-operator"] }
+          ],
+          "require": [
+            { "auth_method": ["mfa"] }
+          ]
+        },
+        {
+          "name": "Allow agents-readonly (read-only scopes only)",
+          "decision": "allow",
+          "include": [
+            { "group": ["agents-readonly"] }
+          ]
+        },
+        {
+          "name": "Block everyone else",
+          "decision": "deny",
+          "include": [{ "everyone": {} }]
+        }
+      ]
+    },
+    {
+      "name": "Autonomous Agent Dashboard",
+      "domain": "agent.<seu-dominio>.com",
+      "type": "self_hosted",
+      "session_duration": "8h",
+      "_comment": "Sessão maior — dashboard é só leitura, não executa ações destrutivas direto",
+      "policies": [
+        {
+          "name": "Allow all agent groups",
+          "decision": "allow",
+          "include": [
+            { "group": ["agents-admin", "agents-operator", "agents-readonly"] }
+          ]
+        },
+        {
+          "name": "Block everyone else",
+          "decision": "deny",
+          "include": [{ "everyone": {} }]
+        }
+      ]
+    }
+  ]
+}

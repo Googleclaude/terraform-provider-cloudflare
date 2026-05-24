@@ -1,0 +1,52 @@
+{
+  "_comment": "AI Gateway — single pane para todas as chamadas LLM do agente. Cache + retry + fallback + observabilidade. Aplicar via POST /accounts/{account_id}/ai-gateway/gateways",
+  "_docs": "https://developers.cloudflare.com/ai-gateway/",
+
+  "gateway": {
+    "id": "ops",
+    "_comment": "URL final: https://gateway.ai.cloudflare.com/v1/{account_id}/ops/{provider}/...",
+    "cache_ttl": 3600,
+    "cache_invalidate_on_update": true,
+    "collect_logs": true,
+    "rate_limiting_interval": 60,
+    "rate_limiting_limit": 1000,
+    "_rate_comment": "1000 req/min global. Per-user via header cf-aig-metadata",
+    "rate_limiting_technique": "sliding"
+  },
+
+  "fallback_chain": [
+    {
+      "_comment": "Primário: Claude (qualidade + tool use)",
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-7",
+      "timeout_ms": 30000
+    },
+    {
+      "_comment": "Fallback 1: GPT (caso Anthropic indisponível)",
+      "provider": "openai",
+      "model": "gpt-4o",
+      "timeout_ms": 30000
+    },
+    {
+      "_comment": "Fallback 2: Workers AI (último recurso, custo zero, qualidade menor)",
+      "provider": "workers-ai",
+      "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "timeout_ms": 60000
+    }
+  ],
+
+  "redaction": {
+    "_comment": "PII em logs — usar masking automático ou regex custom",
+    "patterns": [
+      { "name": "credit_card", "regex": "\\b(?:\\d[ -]*?){13,16}\\b", "replacement": "[CC]" },
+      { "name": "cpf",         "regex": "\\b\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}\\b", "replacement": "[CPF]" },
+      { "name": "email",       "regex": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", "replacement": "[EMAIL]" },
+      { "name": "cf_api_token","regex": "[A-Za-z0-9_-]{40,}", "replacement": "[TOKEN]" }
+    ]
+  },
+
+  "cost_alerts": {
+    "_comment": "Notifica em incrementos de custo. Webhook para Slack/PagerDuty.",
+    "thresholds_usd": [10, 50, 200, 1000]
+  }
+}

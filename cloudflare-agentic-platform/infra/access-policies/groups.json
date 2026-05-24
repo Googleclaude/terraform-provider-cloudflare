@@ -1,0 +1,35 @@
+{
+  "_comment": "Cloudflare Access groups — fonte de autorização do MCP server. Substitua emails/grupos IdP pelos reais antes de aplicar.",
+  "_docs": "https://developers.cloudflare.com/cloudflare-one/identity/users/groups/",
+
+  "groups": [
+    {
+      "name": "agents-admin",
+      "_comment": "Pode aprovar operações destrutivas, configurar agentes, rotacionar secrets",
+      "include": [
+        { "email": ["security-lead@<seu-dominio>.com"] }
+      ],
+      "require": [
+        { "geo": { "country_code": ["BR", "US"] } }
+      ]
+    },
+    {
+      "name": "agents-operator",
+      "_comment": "Opera dia-a-dia: aplica mudanças não-destrutivas, revisa drift, valida runbooks",
+      "include": [
+        { "email_domain": { "domain": "<seu-dominio>.com" } }
+      ],
+      "exclude": [
+        { "email": ["intern-trial@<seu-dominio>.com"] }
+      ]
+    },
+    {
+      "name": "agents-readonly",
+      "_comment": "Vê audit log e dashboards, mas não executa nada",
+      "include": [
+        { "email_domain": { "domain": "<seu-dominio>.com" } },
+        { "email_domain": { "domain": "<parceiro>.com" } }
+      ]
+    }
+  ]
+}
