@@ -24,7 +24,7 @@ func main() {
 	dryRun := flag.Bool("dryrun", false, "Show what changes would be made without actually modifying files")
 	configDir := flag.String("config", "", "Directory containing Terraform files to migrate (defaults to current directory)")
 	stateFile := flag.String("state", "", "Terraform state file to migrate (defaults to first .tfstate file in current directory)")
-	useGrit := flag.Bool("grit", true, "Use grit for initial migrations (default: false)")
+	useGrit := flag.Bool("grit", true, "Use grit for initial migrations (default: true)")
 	useTransformer := flag.Bool("transformer", false, "Use Go-based YAML transformations (default: false)")
 	transformerConfig := flag.String("transformer-dir", "", "Path to directory containing transformer YAML configs (defaults to embedded configs)")
 	patternsDir := flag.String("patterns-dir", "", "Local directory to get patterns from (otherwise they're pulled from github)")
